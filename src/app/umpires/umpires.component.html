@@ -1,0 +1,5 @@
+<h1>{{title}}</h1>
+<a routerLink="/umpires/add">Add</a>
+<div *ngFor="let umpire of umpires" class="media">
+	<a [routerLink]="['/umpires/add', umpire.id]">{{umpire.givenName}} {{umpire.familyName}}</a>
+</div>

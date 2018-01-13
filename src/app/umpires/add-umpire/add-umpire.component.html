@@ -1,0 +1,102 @@
+<div >
+<form 
+      [formGroup]="addUmpireForm">
+  <fieldset formGroupName="name">
+      <div class="form-group"
+           [ngClass]="{
+          'has-danger': givenName.invalid && (givenName.dirty || givenName.touched),
+          'has-success': givenName.valid && (givenName.dirty || givenName.touched)
+        }">
+        <label>Given Name
+          <input type="text" class="form-control"
+                 formControlName="givenName" [(ngModel)]="givenName.text" 
+                 required>
+          <div class="alert alert-danger" *ngIf="givenName.errors && givenName.touched">
+            <div *ngIf="givenName.errors.required">Field is required</div>
+            <div *ngIf="givenName.errors.minlength">Field must have at least {{givenName.errors.minlength.requiredLength}} characters</div>
+            <div *ngIf="givenName.errors.maxlength">Field cannot exceed {{givenName.errors.maxlength.requiredLength}} characters</div>
+            <div *ngIf="givenName.errors.pattern">Field contains invalid characters</div>
+          </div>
+        </label>
+      </div>
+
+      <div class="form-group"
+           [ngClass]="{
+          'has-danger': familyName.invalid && familyName.touched,
+          'has-success': familyName.valid && familyName.touched
+        }">
+          <label>Family Name
+          <input type="text"
+                 class="form-control"
+                 formControlName="familyName" [(ngModel)]="familyName.text"
+                 required>
+            <div class="alert alert-danger" *ngIf="familyName.errors && familyName.touched">
+              <div *ngIf="familyName.errors.required">Field is required</div>
+              <div *ngIf="familyName.errors.minlength">Field must have at least {{familyName.errors.minlength.requiredLength}} characters</div>
+              <div *ngIf="familyName.errors.maxlength">Field cannot exceed {{familyName.errors.maxlength.requiredLength}} characters</div>
+              <div *ngIf="familyName.errors.pattern">Field contains invalid characters</div>
+            </div>
+          </label>
+      </div>
+  </fieldset>
+    
+  <div class="form-group" 
+     [ngClass]="{
+      'has-danger': mobile.invalid && mobile.touched,
+      'has-success': mobile.valid && mobile.touched
+     }">
+    <label>Mobile
+      <input  type="text" 
+              class="form-control"
+              formControlName="mobile" [(ngModel)]="mobile.text"
+              required>
+      <div class="alert alert-danger" *ngIf="mobile.errors && mobile.touched">
+        <div *ngIf="mobile.errors.required">{{fieldRequiredError}}</div>
+        <div *ngIf="mobile.errors.pattern">{{invalidPhoneNumberError}}</div>
+        <div *ngIf="mobile.errors.minlength">Number must be {{mobile.errors.minlength.requiredLength}} digits in length</div>
+        <div *ngIf="mobile.errors.maxlength">Number must be no more than  {{mobile.errors.maxlength.requiredLength}} in length</div>
+      </div>
+    </label>
+  </div>
+
+  <div class="form-group"
+      [ngClass]="{
+      'has-danger': email.invalid && email.touched,
+      'has-success': email.valid && email.touched
+      }">
+
+    <label>Email
+      <input type="email"
+               class="form-control"
+               formControlName="email" [(ngModel)]="email.text"
+               required>
+      <div class="alert alert-danger" *ngIf="email.errors && email.touched">
+        <div *ngIf="email.errors.required">{{fieldRequiredError}}</div>
+        <div *ngIf="email.errors.pattern">{{invalidCharsError}}</div>
+        <div *ngIf="email.errors.emailDomain">Email must be on the {{domain}} domain</div>
+      </div>
+    </label>
+  </div>
+
+  <div *ngIf="idUmpire">
+          <a [routerLink]="['/umpires/delete', idUmpire]">Delete</a>
+  </div>
+
+  <div >
+      <app-accreditation (dataLoadedEvent)="accredLoaded()"></app-accreditation>
+  </div>
+
+  <div class="alert alert-danger" *ngIf="submitWithoutAccreditation">
+    <div>
+      {{submitWithoutAccreditationMsg}}   
+    </div>
+  </div>
+
+  <div>
+    <button  class="btn btn-primary" type="submit" (click)="submitForm(addUmpireForm.value)" [disabled]="!addUmpireForm.valid">Submit
+    </button>
+  </div>
+
+</form>
+<app-umpire (umpireDetailsMessage)="receiveUmpireDetails($event)"></app-umpire>
+</div>

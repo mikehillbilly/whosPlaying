@@ -1,0 +1,11 @@
+<h1>{{title}}</h1>
+<a routerLink="/clubs/add">{{addClubLinkMessage}}</a>
+<ul>
+	<ng-container class="btn-group" *ngFor="let club of clubs">
+		<a [routerLink]="['/clubs/add', club.idClub]">{{club.name}}</a>
+		<br>
+	</ng-container>
+</ul>
+<br>
+
+

@@ -1,1 +1,36 @@
 /* You can add global styles to this file, and also import other style files */
+@import url('https://unpkg.com/bootstrap@3.3.7/dist/css/bootstrap.min.css');
+
+#header {
+	background-color: #66ccff;
+}
+
+#container {
+	background-color: white;
+	width: 800px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+body {
+	background-color: #EEE
+}
+
+#main {
+	background-image: url("https://upload.wikimedia.org/wikipedia/en/thumb/7/7d/SANFL_logo.svg/1200px-SANFL_logo.svg.png");
+	background-size: contain;
+	background-repeat: no-repeat;
+	background-position: center;
+}
+
+#footer {
+   position:absolute;
+   bottom:0;
+   width:100%;
+   height:60px;   /* Height of the footer */
+   background:#6cf;
+}
+
+.form-control.ng-touched.ng-invalid {
+	border: 2px solid red;
+}

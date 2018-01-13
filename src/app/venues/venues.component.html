@@ -1,0 +1,11 @@
+<ng-container *ngIf="showVenues">
+<h1>{{title}}</h1>
+<a routerLink="/venues/add">{{addVenueLinkMessage}}</a>
+<ul>
+	<ng-container class="btn-group" *ngFor="let venue of venues">
+		<a [routerLink]="['/venues/add', venue.idVenue]">{{venue.name}}</a>
+		<br>
+	</ng-container>
+</ul>
+<br>
+</ng-container>

@@ -1,0 +1,43 @@
+
+<form 
+  [formGroup]="addClubForm">
+    <div class="form-group"
+      [ngClass]="{
+      'has-danger': clubName.invalid && (clubName.dirty || clubName.touched),
+      'has-success': clubName.valid && (clubName.dirty || clubName.touched)
+      }">
+      <label>Club Name
+        <input type="text" class="form-control"
+           formControlName="clubName" [(ngModel)]="clubName.text" required>
+          <div class="alert alert-danger" *ngIf="clubName.errors && clubName.touched">
+            <div *ngIf="clubName.errors.required">Field is required</div>
+            <div *ngIf="clubName.errors.minlength">Field must have at least {{clubName.errors.minlength.requiredLength}} characters</div>
+            <div *ngIf="clubName.errors.maxlength">Field cannot exceed {{clubName.errors.maxlength.requiredLength}} characters</div>
+            <div *ngIf="clubName.errors.pattern">Field contains invalid characters</div>
+          </div>
+      </label>
+    </div>
+
+    <div>
+      <mat-form-field>
+        <mat-select placeholder="Home Venue">
+          <mat-option *ngFor="let venue of venues" [value]="venue.idVenue">
+            {{ venue.name }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+      
+    <div *ngIf="idClub">
+            <a [routerLink]="['/clubs/delete', idClub]">Delete</a>
+    </div>
+
+    <div>
+      <button  class="btn btn-primary" type="submit" (click)="submitForm(addClubForm.value)" [disabled]="!addClubForm.valid">Submit
+      </button>
+    </div>
+
+</form>
+<app-club (clubDetailsMessage)="receiveClubDetails($event)"></app-club>
+<app-venues [showVenues]="false" (venuesList)="receiveVenuesList($event)"></app-venues>
+
