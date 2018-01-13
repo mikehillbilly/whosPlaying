@@ -85,7 +85,9 @@ router.get('/clubs', (req, res) => {
 });
 
 router.get('/clubs/add/:id', (req, res) => {
-    let query = 'SELECT * FROM Club WHERE idClub = '+req.params.id;
+    let query = 'SELECT c.*, v.name as venueName, v.idVenue, v.address \
+        FROM Club AS c LEFT JOIN Venue as v \
+        ON c.venue_idVenue = v.idVenue WHERE idClub = '+req.params.id;
     connectDB(query, sendResponse, res);
 });
 

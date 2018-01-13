@@ -25,7 +25,7 @@ export class AddClubComponent implements OnInit {
   private fieldRequiredError:string = 'Entry Required';
   private sub: any;
   private idClub: number;
-  private homeVenue: string;
+  private homeVenue: string = "My Place";
   private venues: [Object];
   private editMode: boolean         = false;
   private showVenues: boolean       = false;
@@ -36,8 +36,6 @@ export class AddClubComponent implements OnInit {
                 private router: Router, 
                 private route: ActivatedRoute,
                 private fb: FormBuilder) { 
-    this.createFormControls();
-    this.createForm();
   }
 
     ngOnInit(){
@@ -49,12 +47,15 @@ export class AddClubComponent implements OnInit {
           this.editMode = true;
           this.clubComponent.getClubDetails(+params['id']);
         }
+      this.createFormControls();
+      this.createForm();
     });
   }
 
     /* The clubComponent sends details of the Club */
   receiveClubDetails($event){
     this.clubName['text'] = $event.name;
+    this.homeVenue = $event.venueName;
   }
 
   receiveVenuesList($event){ 
@@ -80,7 +81,6 @@ export class AddClubComponent implements OnInit {
   submitForm(formDetails){
     let body = {name: formDetails.clubName};  
     this.apiService.postData('/api/clubs/add', body).subscribe(data => {
-    	console.log(data);
         this.router.navigateByUrl('/clubs');
     },(err: HttpErrorResponse) => {
         if (err.error instanceof Error) {
