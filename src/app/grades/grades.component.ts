@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import {ApiService} from '../api.service';
-import { HttpErrorResponse } from '@angular/common/http';
+import { ApiService }                           from '../api.service';
+import { HttpErrorResponse }                    from '@angular/common/http';
 
 @Component({
   selector: 'app-grades',
@@ -12,7 +12,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 export class GradesComponent implements OnInit {
 
 	private title: string = "grades";
-  	private addGradeLinkMessage: string   = "Add New Grade" ;
+  private addGradeLinkMessage: string   = "Add New Grade" ;
 	private grades; 
 
   constructor( private apiService: ApiService){

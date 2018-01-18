@@ -2,7 +2,7 @@
 <a routerLink="/grades/add">{{addGradeLinkMessage}}</a>
 <ul>
 	<ng-container class="btn-group" *ngFor="let grade of grades">
-		<a [routerLink]="['/grades/add', grade.idgrade]">{{grade.name}}</a>
+		<a [routerLink]="['/grades/', grade.idGrade]">{{grade.name}}</a>
 		<br>
 	</ng-container>
 </ul>

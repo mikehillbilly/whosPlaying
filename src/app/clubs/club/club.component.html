@@ -1,0 +1,69 @@
+<form>
+  <!--div   [formGroup]="clubForm"-->
+  <div *ngIf="dataLoaded" [formGroup]="clubForm">  
+    <div class="form-group"
+      [ngClass]="{
+      'has-danger': clubName.invalid && (clubName.dirty || clubName.touched),
+      'has-success': clubName.valid && (clubName.dirty || clubName.touched)
+      }">
+      <label>{{clubLabel}}
+        <input type="text" class="form-control"
+           formControlName="clubName" [(ngModel)]="clubDetails.name" required>
+          <div class="alert alert-danger" *ngIf="clubName.errors && clubName.touched">
+            <div *ngIf="clubName.errors.required">Field is required</div>
+            <div *ngIf="clubName.errors.minlength">Field must have at least {{clubName.errors.minlength.requiredLength}} characters</div>
+            <div *ngIf="clubName.errors.maxlength">Field cannot exceed {{clubName.errors.maxlength.requiredLength}} characters</div>
+            <div *ngIf="clubName.errors.pattern">Field contains invalid characters</div>
+          </div>
+      </label>
+    </div>
+
+    <div class="form-group"
+      [ngClass]="{
+      'has-danger': clubAddress.invalid && (clubAddress.dirty || clubAddress.touched),
+      'has-success': clubAddress.valid && (clubAddress.dirty || clubAddress.touched)
+      }">
+      <label>{{addressLabel}}
+        <input type="text" class="form-control"
+           formControlName="clubAddress" [(ngModel)]="clubDetails.address" required>
+          <div class="alert alert-danger" *ngIf="clubAddress.errors && clubAddress.touched">
+            <div *ngIf="clubAddress.errors.required">Field is required</div>
+            <div *ngIf="clubAddress.errors.minlength">Field must have at least {{clubAddress.errors.minlength.requiredLength}} characters</div>
+            <div *ngIf="clubAddress.errors.maxlength">Field cannot exceed {{clubAddress.errors.maxlength.requiredLength}} characters</div>
+            <div *ngIf="clubAddress.errors.pattern">Field contains invalid characters</div>
+          </div>
+      </label>
+    </div>
+
+    <div>
+      <label>{{venueLabel}}</label><br>
+        <mat-form-field >
+          <mat-select #list [(value)]="homeVenue.name">
+            <mat-option *ngFor="let venue of venues" [value]="venue.name" (click)="venueSelected(venue.idVenue)">
+              {{ venue.name }} 
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+    </div>  
+    
+    <div *ngIf="idClub">
+            <a [routerLink]="['/clubs/delete', idClub]">Delete</a>
+    </div>
+    
+    <div>
+      <button  class="btn btn-primary" type="submit" (click)="submitForm(clubForm.value)" [disabled]="!clubForm.valid">Submit
+      </button>
+    </div>
+
+  </div>
+
+  <app-venues [showVenues]="false" (venuesList)="receiveVenuesList($event)"></app-venues>
+
+</form>
+
+
+
+
+      
+
+

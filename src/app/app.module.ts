@@ -18,7 +18,6 @@ import { UmpireComponent }             from './umpire/umpire.component';
 import { AccreditationComponent }      from './accreditation/accreditation.component';
 import { AddAccreditationComponent }   from './accreditation/add-accreditation/add-accreditation.component';
 import { DeleteUmpireComponent }       from './umpires/delete-umpire/delete-umpire.component';
-import { AddClubComponent }            from './clubs/add-club/add-club.component';
 import { ClubComponent }               from './clubs/club/club.component';
 import { DeleteClubComponent }         from './clubs/delete-club/delete-club.component';
 import { VenuesComponent }             from './venues/venues.component';
@@ -34,6 +33,7 @@ import { TeamsComponent }              from './teams/teams.component';
 import { TeamComponent }               from './teams/team/team.component';
 import { AddTeamComponent }            from './teams/add-team/add-team.component';
 import { DeleteTeamComponent }         from './teams/delete-team/delete-team.component';
+import { DeleteEntityComponent }       from './delete-entity/delete-entity.component';
 
 @NgModule({
   declarations: [
@@ -47,7 +47,6 @@ import { DeleteTeamComponent }         from './teams/delete-team/delete-team.com
     AccreditationComponent,
     AddAccreditationComponent,
     DeleteUmpireComponent,
-    AddClubComponent,
     ClubComponent,
     DeleteClubComponent,
     VenuesComponent,
@@ -62,7 +61,8 @@ import { DeleteTeamComponent }         from './teams/delete-team/delete-team.com
     TeamsComponent,
     TeamComponent,
     AddTeamComponent,
-    DeleteTeamComponent
+    DeleteTeamComponent,
+    DeleteEntityComponent
   ],
   imports: [
     FormsModule,                               
@@ -78,22 +78,22 @@ import { DeleteTeamComponent }         from './teams/delete-team/delete-team.com
       {path: '', component: AppComponent},
       {path: 'accreditation/add', component: AddAccreditationComponent},
       {path: 'accreditation', component: AccreditationComponent},      
-      {path: 'clubs/add/:id', component: AddClubComponent},
-      {path: 'clubs/add', component: AddClubComponent},     
-      {path: 'clubs/delete/:id', component: DeleteClubComponent},
+      {path: 'clubs/:id', component: ClubComponent},
+      {path: 'clubs/add', component: ClubComponent},     
+      {path: 'clubs/delete/:id', component: DeleteEntityComponent},
       {path: 'clubs', component: ClubsComponent},    
-      {path: 'umpires/add/:id', component: AddUmpireComponent},
+      {path: 'umpires/:id', component: UmpireComponent},
       {path: 'umpires/add', component: AddUmpireComponent},
       {path: 'umpires', component: UmpiresComponent},
-      {path: 'umpires/delete/:id', component: DeleteUmpireComponent},
-      {path: 'venues/add/:id', component: AddVenueComponent},
+      {path: 'umpires/delete/:id', component: DeleteEntityComponent},
+      {path: 'venues/:id', component: VenueComponent},
       {path: 'venues/add', component: AddVenueComponent},
       {path: 'venues', component: VenuesComponent},
-      {path: 'venues/delete/:id', component: DeleteVenueComponent},
-      {path: 'grades/add/:id', component: AddGradeComponent},
-      {path: 'grades/add', component: AddGradeComponent},
+      {path: 'venues/delete/:id', component: DeleteEntityComponent},
+      {path: 'grades/:id', component: GradeComponent},
+      {path: 'grades/add', component: GradeComponent},
       {path: 'grades', component: GradesComponent},
-      {path: 'grades/delete/:id', component: DeleteGradeComponent},
+      {path: 'grades/delete/:id', component: DeleteEntityComponent},
       {path: '**', component: NotFoundComponent}])
     ],
   providers: [],

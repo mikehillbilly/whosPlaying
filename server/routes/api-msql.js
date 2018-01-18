@@ -22,27 +22,9 @@ router.use(function(req, res, next){
 	next();
 });
 
-/* GET api listing. */
-
-router.post('/venues/add/:id', (req, res) => {
-    let query = "UPDATE Venue SET name = \""+req.body.name+"\", address = \""+req.body.address+"\" WHERE idVenue = "+req.params.id;
-    connectDB(query, sendResponse, res);      
-});
-
-router.post('/venues/add/', (req, res) => {
-    let query = "INSERT INTO Venue ('name', 'address') VALUES (\""+req.body.name+"\",\""+req.body.address+"\")";
-    connectDB(query, sendResponse, res);      
-});
-
-router.post('/grades/add/:id', (req, res) => {
-    let query = "UPDATE Grade SET name = \""+req.body.name+"\", description = \""+req.body.description+"\" WHERE idGrade = "+req.params.id;
-    connectDB(query, sendResponse, res);      
-});
-
-router.post('/grades/add/', (req, res) => {
-    let query = "INSERT INTO Grade ('name', 'description') VALUES (\""+req.body.name+"\",\""+req.body.description+"\")";
-    connectDB(query, sendResponse, res);      
-});
+/*
+ ******************************POST API*************************************
+*/
 
 router.post('/accreditation/add/:id', (req, res) => {
     console.log(req.body);
@@ -52,12 +34,103 @@ router.post('/accreditation/add/:id', (req, res) => {
 
 router.post('/accreditation/add/', (req, res) => {
     console.log(req.body);
-    let query = "INSERT INTO Accreditation (level, description) VALUES (\""+req.body.level+"\",\""+req.body.description+"\")";
+    let query = "INSERT INTO Accreditation (level, description) \
+                VALUES (\""+req.body.level+"\",\""+req.body.description+"\")";
     connectDB(query, sendResponse, res);      
 });
 
-router.get('/umpires/add/:id', (req, res) => {
-    let query = 'SELECT * FROM Umpire WHERE idUmpire = '+req.params.id;
+router.post('/accreditation/delete/:id', (req, res) => {
+    let query = "DELETE FROM Accreditation WHERE idAccreditation = "+req.params.id;
+    connectDB(query, sendResponse, res);      
+});
+
+router.post('/clubs/add/:id', (req, res) => {
+    let query = "UPDATE Club SET name = \""+req.body.name+"\", \
+                address = \""+req.body.address+"\", \
+                Venue_idVenue = \""+req.body.idVenue+"\" \
+                WHERE idClub = "+req.params.id;
+    connectDB(query, sendResponse, res);      
+});
+
+router.post('/clubs/add/', (req, res) => {
+    let query = "INSERT INTO Club (name, address,Venue_idVenue) \
+                VALUES (\""+req.body.name+"\",\""+req.body.address+"\","+req.body.idVenue+")";
+    connectDB(query, sendResponse, res);      
+});
+
+router.post('/clubs/delete/:id', (req, res) => {
+    let query = "DELETE FROM Club WHERE idClub = "+req.params.id;
+    connectDB(query, sendResponse, res);      
+});
+
+router.post('/grades/add/:id', (req, res) => {
+    let query = "UPDATE Grade SET name = \""+req.body.name+"\", description = \""+req.body.description+"\" WHERE idGrade = "+req.params.id;
+    connectDB(query, sendResponse, res);      
+});
+
+router.post('/grades/add/', (req, res) => {
+    let query = "INSERT INTO Grade (name, description) VALUES (\""+req.body.name+"\",\""+req.body.description+"\")";
+    connectDB(query, sendResponse, res);      
+});
+
+router.post('/grades/delete/:id', (req, res) => {
+    let query = "DELETE FROM Grade WHERE idGrade = "+req.params.id;
+    connectDB(query, sendResponse, res);      
+});
+
+router.post('/venues/add/:id', (req, res) => {
+    let query = "UPDATE Venue SET name = \""+req.body.name+"\", address = \""+req.body.address+"\" WHERE idVenue = "+req.params.id;
+    connectDB(query, sendResponse, res);      
+});
+
+router.post('/venues/add/', (req, res) => {
+    let query = "INSERT INTO Venue (name, address) VALUES (\""+req.body.name+"\",\""+req.body.address+"\")";
+    connectDB(query, sendResponse, res);      
+});
+
+router.post('/venues/delete/:id', (req, res) => {
+    let query = "DELETE FROM Venue WHERE idVenue = "+req.params.id;
+    connectDB(query, sendResponse, res);      
+});
+
+/*
+ ******************************GET API*************************************
+*/
+
+router.get('/accreditation', (req, res) => {
+    let query ='SELECT * FROM Accreditation';
+    connectDB(query, sendResponse, res);
+});
+
+router.get('/accredUmpire/:id', (req, res) => {
+    let query  = 'SELECT * from AccreditedUmpire WHERE Umpire_idUmpire = '+req.params.id;
+    connectDB(query, sendResponse, res);
+});
+
+router.get('/clubs', (req, res) => {
+    let query = 'SELECT * FROM Club ORDER BY name';
+    connectDB(query, sendResponse, res);
+});
+
+router.get('/clubs/:id', (req, res) => {
+    let query = 'SELECT c.*, v.name as venueName, v.idVenue, v.address as venueAddress \
+        FROM Club AS c LEFT JOIN Venue as v \
+        ON c.venue_idVenue = v.idVenue WHERE idClub = '+req.params.id;
+    connectDB(query, sendResponse, res);
+});
+
+router.get('/grades', (req, res) => {
+    let query = "SELECT * FROM Grade ORDER BY name";
+    connectDB(query, sendResponse, res);
+});
+
+router.get('/grades/:id', (req, res) => {
+    let query = 'SELECT * FROM Grade WHERE idGrade = '+req.params.id;
+    connectDB(query, sendResponse, res);
+});
+
+router.get('/modules', (req, res) => {
+    let query = "SELECT * FROM Modules WHERE enabled = true ORDER BY name";
     connectDB(query, sendResponse, res);
 });
 
@@ -69,30 +142,8 @@ router.get('/umpires', (req, res) => {
     connectDB(query, sendResponse, res);
 });
 
-router.get('/accredUmpire/:id', (req, res) => {
-    let query  = 'SELECT * from AccreditedUmpire WHERE Umpire_idUmpire = '+req.params.id;
-    connectDB(query, sendResponse, res);
-});
-
-router.get('/accreditation', (req, res) => {
-    let query ='SELECT * FROM Accreditation';
-    connectDB(query, sendResponse, res);
-});
-
-router.get('/clubs', (req, res) => {
-    let query = 'SELECT * FROM Club ORDER BY name';
-    connectDB(query, sendResponse, res);
-});
-
-router.get('/clubs/add/:id', (req, res) => {
-    let query = 'SELECT c.*, v.name as venueName, v.idVenue, v.address \
-        FROM Club AS c LEFT JOIN Venue as v \
-        ON c.venue_idVenue = v.idVenue WHERE idClub = '+req.params.id;
-    connectDB(query, sendResponse, res);
-});
-
-router.get('/modules', (req, res) => {
-    let query = "SELECT * FROM Modules WHERE enabled = true ORDER BY name";
+router.get('/umpires/:id', (req, res) => {
+    let query = 'SELECT * FROM Umpire WHERE idUmpire = '+req.params.id;
     connectDB(query, sendResponse, res);
 });
 
@@ -101,18 +152,8 @@ router.get('/venues', (req, res) => {
     connectDB(query, sendResponse, res);
 });
 
-router.get('/venues/add/:id', (req, res) => {
+router.get('/venues/:id', (req, res) => {
     let query = 'SELECT * FROM Venue WHERE idVenue = '+req.params.id;
-    connectDB(query, sendResponse, res);
-});
-
-router.get('/grades', (req, res) => {
-    let query = "SELECT * FROM Grade ORDER BY name";
-    connectDB(query, sendResponse, res);
-});
-
-router.get('/grades/add/:id', (req, res) => {
-    let query = 'SELECT * FROM Grade WHERE idGrade = '+req.params.id;
     connectDB(query, sendResponse, res);
 });
 

@@ -1,3 +1,48 @@
-<p>
-  grade works!
-</p>
+<form>
+	<div *ngIf="dataLoaded" [formGroup]="gradeForm">  
+
+	    <div class="form-group"
+	      [ngClass]="{
+	      'has-danger': gradeName.invalid && (gradeName.dirty || gradeName.touched),
+	      'has-success': gradeName.valid && (gradeName.dirty || gradeName.touched)
+	      }">
+	      <label>{{gradeLabel}}
+	        <input type="text" class="form-control"
+	           formControlName="gradeName" [(ngModel)]="gradeDetails.name" required>
+	          <div class="alert alert-danger" *ngIf="gradeName.errors && gradeName.touched">
+	            <div *ngIf="gradeName.errors.required">Field is required</div>
+	            <div *ngIf="gradeName.errors.minlength">Field must have at least {{gradeName.errors.minlength.requiredLength}} characters</div>
+	            <div *ngIf="gradeName.errors.maxlength">Field cannot exceed {{gradeName.errors.maxlength.requiredLength}} characters</div>
+	            <div *ngIf="gradeName.errors.pattern">Field contains invalid characters</div>
+	          </div>
+	      </label>
+	    </div>
+
+	    <div class="form-group"
+	      [ngClass]="{
+	      'has-danger': gradeDescription.invalid && (gradeDescription.dirty || gradeDescription.touched),
+	      'has-success': gradeDescription.valid && (gradeDescription.dirty || gradeDescription.touched)
+	      }">
+	      <label>{{descriptionLabel}}
+	        <input type="text" class="form-control"
+	           formControlName="gradeDescription" [(ngModel)]="gradeDetails.description" required>
+	          <div class="alert alert-danger" *ngIf="gradeDescription.errors && gradeDescription.touched">
+	            <div *ngIf="gradeDescription.errors.required">Field is required</div>
+	            <div *ngIf="gradeDescription.errors.minlength">Field must have at least {{gradeDescription.errors.minlength.requiredLength}} characters</div>
+	            <div *ngIf="gradeDescription.errors.maxlength">Field cannot exceed {{gradeDescription.errors.maxlength.requiredLength}} characters</div>
+	            <div *ngIf="gradeDescription.errors.pattern">Field contains invalid characters</div>
+	          </div>
+	      </label>
+	    </div>
+
+	    <div *ngIf="idGrade">
+            <a [routerLink]="['/grades/delete', idGrade]">Delete</a>
+    	</div>
+    
+	    <div>
+	      <button  class="btn btn-primary" type="submit" (click)="submitForm(gradeForm.value)" [disabled]="!gradeForm.valid">Submit
+	      </button>
+	    </div>
+
+	</div>
+</form>

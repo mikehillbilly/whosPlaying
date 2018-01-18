@@ -87,7 +87,6 @@ export class AddGradeComponent implements OnInit {
     if(this.editMode)
     	url = url + this.idGrade;
     this.apiService.postData(url, body).subscribe(data => {
-    	console.log(data);
         this.router.navigateByUrl('/grades');
     },(err: HttpErrorResponse) => {
         if (err.error instanceof Error) {
