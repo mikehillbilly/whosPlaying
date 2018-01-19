@@ -4,27 +4,26 @@ import { ReactiveFormsModule, FormsModule, FormGroup,
           FormBuilder, FormArray }                      from '@angular/forms';
 import { BrowserModule}                                 from '@angular/platform-browser';
 import { platformBrowserDynamic}                        from '@angular/platform-browser-dynamic';
-import { UmpireComponent}                               from '../../umpire/umpire.component';
 import { ApiService}                                    from '../../api.service';
 import { HttpErrorResponse }                            from '@angular/common/http';
 import { RouterModule, Router }                         from '@angular/router';
-import { AccreditationComponent}                        from '../../accreditation/accreditation.component';
+import { AccreditationComponent}                        from '../../accreditations/accreditation/accreditation.component';
 import { ActivatedRoute }                               from '@angular/router';
 
 @Component({
-  selector: 'add-umpire',
-  templateUrl: './add-umpire.component.html',
-  styleUrls: ['./add-umpire.component.css'],
+  selector: 'app-umpire',
+  templateUrl: './umpire.component.html',
+  styleUrls: ['./umpire.component.css'],
   providers: [ApiService]
   
 })
-export class AddUmpireComponent implements OnInit {
+export class UmpireComponent implements OnInit {
   langs: string[] = [
     'English',
     'French',
     'German',
   ];
-  private addUmpireForm: FormGroup;
+  private umpireForm: FormGroup;
   private givenName: FormControl;
   private familyName: FormControl;
   private mobile: FormControl;
@@ -35,48 +34,54 @@ export class AddUmpireComponent implements OnInit {
   private invalidPhoneNumberError: string       = "Invalid Phone Number";
   private submitWithoutAccreditationMsg: string = "Accreditation must be selected";
   private domain: string                        = 'sanfl.com.au' //to be derived from the client configuration
-  private isDataAvailable: boolean              = false;
-  private submitWithoutAccreditation            = false;
   private sub: any;
   private editMode: boolean                     = false;
+  private accreditations: [Object];
+  private umpireAccreditations: [Object];
+  private dataLoaded: boolean                   = false;
+  private umpireDetails: any                     = {};
 
   // Sharing data from two sub components
   @ViewChild(AccreditationComponent) accredComponent;
-  @ViewChild(UmpireComponent) umpireComponent;
 
   constructor(  private route: ActivatedRoute,
                 private apiService: ApiService,  
                 private router: Router, 
                 private fb: FormBuilder){
-
-        this.createFormControls();
-        this.createForm();
   }
 
   ngOnInit(){
-      this.sub = this.route.params.subscribe(params => {
-        /* If this component was called with a parameter then 
-        the form needs to be pre-filled and set to edit mode */
-        if(+params['id']){
-          this.idUmpire = +params['id'];
-          this.editMode = true;
-          this.umpireComponent.getUmpireDetails(+params['id']);
-        }
-    });
+     this.createFormControls();
+     this.createForm();
+   }
+
+  getUmpireDetails(){    
+     /* See if we have a club ID. If so then club details are needed */
+     this.sub = this.route.params.subscribe(params => {
+       this.idUmpire = +params['id'];
+       /*
+        * Umpire is to be edited.
+       */
+       if(this.idUmpire){
+         this.editMode = true;
+         this.apiService.getData('/api/umpires/'+this.idUmpire).subscribe(data => {
+            this.umpireDetails = data[0];
+         });
+       }
+       this.dataLoaded = true;
+     });
   }
 
-  /* The umpireComponent sends details of the Umpire */
-  receiveUmpireDetails($event){
-    this.givenName['text'] = $event.givenName;
-    this.familyName['text'] = $event.familyName;
-    this.email['text'] = $event.email;
-    this.mobile['text'] = $event.mobile;
+  receiveAccreditationsList($event) {
+    this.accreditations = $event;
+    if(this.accreditations){
+      this.getUmpireDetails();
+    }
   }
 
-  /* Called from HTML when the AccreditationModule is loaded*/
-  accredLoaded(){
-    this.accredComponent.allowSelect = true;
-    this.isDataAvailable = true;
+  receiveAccredUmpList($event){
+    console.log($event);
+    this.umpireAccreditations = $event;
   }
 
   createFormControls() {
@@ -107,7 +112,7 @@ export class AddUmpireComponent implements OnInit {
   }
 
   createForm() {
-    this.addUmpireForm = this.fb.group({
+    this.umpireForm = this.fb.group({
       name: new FormGroup({
         givenName: this.givenName,
         familyName: this.familyName,
@@ -131,7 +136,7 @@ export class AddUmpireComponent implements OnInit {
     }
     return null;
   }
-
+/*
   submitForm(value){
     let atLeastOne:boolean = false;
     let familyName = value['name']['familyName'];
@@ -200,4 +205,5 @@ export class AddUmpireComponent implements OnInit {
       this.submitWithoutAccreditation = true;
       console.log("At least one accreditation level must be selected")}
   }
+  */
 }

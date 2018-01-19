@@ -1,1 +1,48 @@
+<form>
+	<div *ngIf="dataLoaded" [formGroup]="venueForm">  
 
+	    <div class="form-group"
+	      [ngClass]="{
+	      'has-danger': venueName.invalid && (venueName.dirty || venueName.touched),
+	      'has-success': venueName.valid && (venueName.dirty || venueName.touched)
+	      }">
+	      <label>{{venueLabel}}
+	        <input type="text" class="form-control"
+	           formControlName="venueName" [(ngModel)]="venueDetails.name" required>
+	          <div class="alert alert-danger" *ngIf="venueName.errors && venueName.touched">
+	            <div *ngIf="venueName.errors.required">Field is required</div>
+	            <div *ngIf="venueName.errors.minlength">Field must have at least {{venueName.errors.minlength.requiredLength}} characters</div>
+	            <div *ngIf="venueName.errors.maxlength">Field cannot exceed {{venueName.errors.maxlength.requiredLength}} characters</div>
+	            <div *ngIf="venueName.errors.pattern">Field contains invalid characters</div>
+	          </div>
+	      </label>
+	    </div>
+
+	    <div class="form-group"
+	      [ngClass]="{
+	      'has-danger': venueAddress.invalid && (venueAddress.dirty || venueAddress.touched),
+	      'has-success': venueAddress.valid && (venueAddress.dirty || venueAddress.touched)
+	      }">
+	      <label>{{addressLabel}}
+	        <input type="text" class="form-control"
+	           formControlName="venueAddress" [(ngModel)]="venueDetails.address" required>
+	          <div class="alert alert-danger" *ngIf="venueAddress.errors && venueAddress.touched">
+	            <div *ngIf="venueAddress.errors.required">Field is required</div>
+	            <div *ngIf="venueAddress.errors.minlength">Field must have at least {{venueAddress.errors.minlength.requiredLength}} characters</div>
+	            <div *ngIf="venueAddress.errors.maxlength">Field cannot exceed {{venueAddress.errors.maxlength.requiredLength}} characters</div>
+	            <div *ngIf="venueAddress.errors.pattern">Field contains invalid characters</div>
+	          </div>
+	      </label>
+	    </div>
+
+	    <div *ngIf="idVenue">
+            <a [routerLink]="['/venues/delete', idVenue]">Delete</a>
+    	</div>
+    
+	    <div>
+	      <button  class="btn btn-primary" type="submit" (click)="submitForm(venueForm.value)" [disabled]="!venueForm.valid">Submit
+	      </button>
+	    </div>
+
+	</div>
+</form>

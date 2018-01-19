@@ -9,26 +9,26 @@ import { ApiService }                         from '../../api.service';
 
 
 @Component({
-  selector: 'app-grade',
-  templateUrl: './grade.component.html',
-  styleUrls: ['./grade.component.css'],
+  selector: 'app-accreditation',
+  templateUrl: './accreditation.component.html',
+  styleUrls: ['./accreditation.component.css'],
   encapsulation: ViewEncapsulation.None
 })
 
-export class GradeComponent implements OnInit {
-  private gradeForm: FormGroup;
-  private gradeName: FormControl;
-  private gradeDescription: FormControl;
-	private sub:         any;
-	private gradeDetails: any     = {};
-  private idGrade: number;
-  private editMode: boolean     = false;
-  private dataLoaded: boolean   = false;
+export class AccreditationComponent implements OnInit {
+  private accreditationForm: FormGroup;
+  private accreditationLevel: FormControl;
+  private accreditationDescription: FormControl;
+  private sub:         any;
+  private accreditationDetails: any = {};
+  private idAccreditation: number;
+  private editMode: boolean         = false;
+  private dataLoaded: boolean       = false;
   private invalidCharsError:string  = 'Invalid characters';
   private fieldRequiredError:string = 'Entry Required';
-  private gradeLabel: string        = 'Grade Name';
-  private descriptionLabel: string  = 'Grade Description';
-  private redirectOutlet: string    = '/grades';
+  private accreditationLabel: string= 'Accreditation Level';
+  private descriptionLabel: string  = 'Accreditation Description';
+  private redirectOutlet: string    = '/accreditations';
 
  constructor( private apiService: ApiService,  
                private router: Router, 
@@ -39,35 +39,35 @@ export class GradeComponent implements OnInit {
   ngOnInit() {
     this.createFormControls();
     this.createForm();
-    this.getGradeDetails();
+    this.getaccreditationDetails();
   }
 
-  getGradeDetails(){
+  getaccreditationDetails(){
       this.sub = this.route.params.subscribe(params => {
-        this.idGrade = +params['id'];
-        if(this.idGrade){
+        this.idAccreditation = +params['id'];
+        if(this.idAccreditation){
+          console.log("idAccreditation: ",this.idAccreditation)
           this.editMode = true;
-          this.apiService.getData('/api/grades/'+this.idGrade).subscribe(data => {
-            this.gradeDetails = data[0];
-            this.sendGradeDetails();
+          this.apiService.getData('/api/accreditations/'+this.idAccreditation).subscribe(data => {
+            this.accreditationDetails = data[0];
+            this.sendAccreditationDetails();
           });
         }
         this.dataLoaded = true;
       });  
   }
 
-  sendGradeDetails(){
-    this.gradeDetailsMessage.emit(this.gradeDetails);
+  sendAccreditationDetails(){
+    this.accreditationDetailsMessage.emit(this.accreditationDetails);
   }
 
-  submitForm(formDetails){
+  submitForm(formDetails){  
+    let body = {    level: formDetails.accreditationLevel,
+                    description: formDetails.accreditationDescription }
     
-    let body = {    name: formDetails.gradeName,
-                    description: formDetails.gradeDescription }
-    
-    let url = '/api/grades/add/';
+    let url = '/api/accreditations/add/';
     if(this.editMode)
-      url = url + this.idGrade;
+      url = url + this.idAccreditation;
                   
     this.apiService.postData(url, body).subscribe(data => {
         this.router.navigateByUrl(this.redirectOutlet);
@@ -85,13 +85,13 @@ export class GradeComponent implements OnInit {
   }
 
   createFormControls() {
-    this.gradeName = new FormControl('', [
+    this.accreditationLevel = new FormControl('', [
        Validators.required,
        Validators.minLength(3),
        Validators.maxLength(50),
        Validators.pattern("^([A-z]+[ ]*[0-9]*)+$")
     ]);
-    this.gradeDescription = new FormControl('', [
+    this.accreditationDescription = new FormControl('', [
        Validators.required,
        Validators.minLength(3),
        Validators.maxLength(120),
@@ -100,11 +100,11 @@ export class GradeComponent implements OnInit {
   }
 
   createForm() {
-    this.gradeForm = this.fb.group({
-      gradeName:           this.gradeName,
-      gradeDescription:    this.gradeDescription,
+    this.accreditationForm = this.fb.group({
+      accreditationLevel:           this.accreditationLevel,
+      accreditationDescription:    this.accreditationDescription,
     });       
   }
 
-  @Output() gradeDetailsMessage = new EventEmitter<Object>();
+  @Output() accreditationDetailsMessage = new EventEmitter<Object>();
 }

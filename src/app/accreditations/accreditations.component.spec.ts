@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DeleteGradeComponent } from './delete-grade.component';
+import { AccreditationsComponent } from './accreditations.component';
 
-describe('DeleteGradeComponent', () => {
-  let component: DeleteGradeComponent;
-  let fixture: ComponentFixture<DeleteGradeComponent>;
+describe('AccreditationComponent', () => {
+  let component: AccreditationsComponent;
+  let fixture: ComponentFixture<AccreditationsComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ DeleteGradeComponent ]
+      declarations: [ AccreditationsComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(DeleteGradeComponent);
+    fixture = TestBed.createComponent(AccreditationsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

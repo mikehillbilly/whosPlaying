@@ -1,0 +1,48 @@
+<form>
+  <div *ngIf="dataLoaded" [formGroup]="accreditationForm">  
+
+      <div class="form-group"
+        [ngClass]="{
+        'has-danger': accreditationLevel.invalid && (accreditationLevel.dirty || accreditationLevel.touched),
+        'has-success': accreditationLevel.valid && (accreditationLevel.dirty || accreditationLevel.touched)
+        }">
+        <label>{{accreditationLabel}}
+          <input type="text" class="form-control"
+             formControlName="accreditationLevel" [(ngModel)]="accreditationDetails.level" required>
+            <div class="alert alert-danger" *ngIf="accreditationLevel.errors && accreditationLevel.touched">
+              <div *ngIf="accreditationLevel.errors.required">Field is required</div>
+              <div *ngIf="accreditationLevel.errors.minlength">Field must have at least {{accreditationLevel.errors.minlength.requiredLength}} characters</div>
+              <div *ngIf="accreditationLevel.errors.maxlength">Field cannot exceed {{accreditationLevel.errors.maxlength.requiredLength}} characters</div>
+              <div *ngIf="accreditationLevel.errors.pattern">Field contains invalid characters</div>
+            </div>
+        </label>
+      </div>
+
+      <div class="form-group"
+        [ngClass]="{
+        'has-danger': accreditationDescription.invalid && (accreditationDescription.dirty || accreditationDescription.touched),
+        'has-success': accreditationDescription.valid && (accreditationDescription.dirty || accreditationDescription.touched)
+        }">
+        <label>{{descriptionLabel}}
+          <input type="text" class="form-control"
+             formControlName="accreditationDescription" [(ngModel)]="accreditationDetails.description" required>
+            <div class="alert alert-danger" *ngIf="accreditationDescription.errors && accreditationDescription.touched">
+              <div *ngIf="accreditationDescription.errors.required">Field is required</div>
+              <div *ngIf="accreditationDescription.errors.minlength">Field must have at least {{accreditationDescription.errors.minlength.requiredLength}} characters</div>
+              <div *ngIf="accreditationDescription.errors.maxlength">Field cannot exceed {{accreditationDescription.errors.maxlength.requiredLength}} characters</div>
+              <div *ngIf="accreditationDescription.errors.pattern">Field contains invalid characters</div>
+            </div>
+        </label>
+      </div>
+
+      <div *ngIf="idAccreditation">
+            <a [routerLink]="['/accreditations/delete', idAccreditation]">Delete</a>
+      </div>
+    
+      <div>
+        <button  class="btn btn-primary" type="submit" (click)="submitForm(accreditationForm.value)" [disabled]="!accreditationForm.valid">Submit
+        </button>
+      </div>
+
+  </div>
+</form>

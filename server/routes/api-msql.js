@@ -26,20 +26,20 @@ router.use(function(req, res, next){
  ******************************POST API*************************************
 */
 
-router.post('/accreditation/add/:id', (req, res) => {
+router.post('/accreditations/add/:id', (req, res) => {
     console.log(req.body);
-    let query = "UPDATE Accreditation SET name = \""+req.body.level+"\", description = \""+req.body.description+"\" WHERE idAccreditation = "+req.params.id;
+    let query = "UPDATE Accreditation SET level = \""+req.body.level+"\", description = \""+req.body.description+"\" WHERE idAccreditation = "+req.params.id;
     connectDB(query, sendResponse, res);      
 });
 
-router.post('/accreditation/add/', (req, res) => {
+router.post('/accreditations/add/', (req, res) => {
     console.log(req.body);
     let query = "INSERT INTO Accreditation (level, description) \
                 VALUES (\""+req.body.level+"\",\""+req.body.description+"\")";
     connectDB(query, sendResponse, res);      
 });
 
-router.post('/accreditation/delete/:id', (req, res) => {
+router.post('/accreditations/delete/:id', (req, res) => {
     let query = "DELETE FROM Accreditation WHERE idAccreditation = "+req.params.id;
     connectDB(query, sendResponse, res);      
 });
@@ -97,8 +97,18 @@ router.post('/venues/delete/:id', (req, res) => {
  ******************************GET API*************************************
 */
 
-router.get('/accreditation', (req, res) => {
+router.get('/accreditations', (req, res) => {
     let query ='SELECT * FROM Accreditation';
+    connectDB(query, sendResponse, res);
+});
+
+router.get('/accreditations/:id', (req, res) => {
+    let query = 'SELECT * FROM Accreditation WHERE idAccreditation = '+req.params.id;
+    connectDB(query, sendResponse, res);
+});
+
+router.get('/accreditations/umpire/:id', (req, res) => {
+    let query = 'SELECT * FROM AccreditedUmpire WHERE Umpire_idUmpire = '+req.params.id;
     connectDB(query, sendResponse, res);
 });
 

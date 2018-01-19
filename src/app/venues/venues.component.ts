@@ -21,9 +21,6 @@ export class VenuesComponent implements OnInit {
 	
   }
 
-  @Input() showVenues: boolean = true;
-  @Output() venuesList = new EventEmitter<Object>(); 
-
   ngOnInit() {
   	 this.apiService.getData('/api/venues').subscribe(data => {
   	 		this.venues = data;
@@ -39,10 +36,11 @@ export class VenuesComponent implements OnInit {
       }
   	 });
   }
+  @Input()  showVenues: boolean           = true;
+  @Output() venuesList = new EventEmitter<Object>(); 
 
   sendVenueList(){
     this.venuesList.emit(this.venues);
   }
-
 
 }

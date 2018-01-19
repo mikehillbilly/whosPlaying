@@ -1,0 +1,14 @@
+<ng-container *ngIf="showAccreditations">
+<h1>{{title}}</h1>
+<p>idUmpire: {{idUmpire}}</p>
+<a routerLink="/accreditations/add">{{addAccreditationLinkMessage}}</a>
+<ul>
+	<ng-container class="btn-group" *ngFor="let accreditation of accreditations">
+		<a [routerLink]="['/accreditations/', accreditation.idAccreditation]">{{accreditation.level}}</a>
+		<br>
+	</ng-container>
+</ul>
+<br>
+</ng-container>
+
+

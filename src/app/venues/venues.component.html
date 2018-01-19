@@ -3,7 +3,7 @@
 <a routerLink="/venues/add">{{addVenueLinkMessage}}</a>
 <ul>
 	<ng-container class="btn-group" *ngFor="let venue of venues">
-		<a [routerLink]="['/venues/add', venue.idVenue]">{{venue.name}}</a>
+		<a [routerLink]="['/venues/', venue.idVenue]">{{venue.name}}</a>
 		<br>
 	</ng-container>
 </ul>

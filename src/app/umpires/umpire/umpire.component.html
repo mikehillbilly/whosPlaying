@@ -1,6 +1,6 @@
 <div >
 <form 
-      [formGroup]="addUmpireForm">
+      [formGroup]="umpireForm">
   <fieldset formGroupName="name">
       <div class="form-group"
            [ngClass]="{
@@ -82,7 +82,7 @@
           <a [routerLink]="['/umpires/delete', idUmpire]">Delete</a>
   </div>
 
-  <div >
+  <!--div>
       <app-accreditation (dataLoadedEvent)="accredLoaded()"></app-accreditation>
   </div>
 
@@ -90,13 +90,13 @@
     <div>
       {{submitWithoutAccreditationMsg}}   
     </div>
-  </div>
+  </div-->
 
   <div>
-    <button  class="btn btn-primary" type="submit" (click)="submitForm(addUmpireForm.value)" [disabled]="!addUmpireForm.valid">Submit
+    <button  class="btn btn-primary" type="submit" (click)="submitForm(umpireForm.value)" [disabled]="!umpireForm.valid">Submit
     </button>
   </div>
 
 </form>
-<app-umpire (umpireDetailsMessage)="receiveUmpireDetails($event)"></app-umpire>
+<app-accreditations [showAccreditations]="true" [idUmpire]="idUmpire" (accreditationsList)="receiveAccreditationsList($event)" (accredUmpList)="receiveAccredUmpList($event)"></app-accreditations>
 </div>
