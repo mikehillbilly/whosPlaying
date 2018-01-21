@@ -78,6 +78,48 @@ router.post('/grades/delete/:id', (req, res) => {
     connectDB(query, sendResponse, res);      
 });
 
+router.post('/umpires/add/:id', (req, res) => {
+    let query = "UPDATE `Umpire` SET `familyName`=\""+req.body.familyName+"\"" + 
+                  ",`givenName`=\""+req.body.givenName+"\"" +
+                  ",`mobile`=\""+req.body.mobile+"\"" + 
+                  ",`email`=\""+req.body.email+"\"" + 
+                  " WHERE `idUmpire`="+req.params.id+"; \
+                  DELETE FROM AccreditedUmpire WHERE `Umpire_idUmpire`="+req.params.id+"; \
+                  SET @idUmpire = "+req.params.id+"; \
+                  INSERT INTO AccreditedUmpire (Accreditation_idAccreditation, Umpire_idUmpire) \
+                  VALUES "+req.body.accreditationClause+";"; 
+    connectDB(query, sendResponse, res);
+
+});
+
+router.post('/umpires/add/', (req, res) => {
+    let query = "INSERT INTO Umpire (givenName, familyName, mobile, email, idEmployee) VALUES( \
+    \""+req.body.givenName+"\",\""+req.body.familyName+"\", \
+    \""+req.body.mobile+"\",\""+req.body.email+"\", NULL); \
+                  SET @idUmpire = LAST_INSERT_ID();\
+                  INSERT INTO AccreditedUmpire (Accreditation_idAccreditation, Umpire_idUmpire) \
+                  VALUES "+req.body.accreditationClause+";";  
+    connectDB(query, sendResponse, res);
+
+});
+
+router.post('/umpires/delete/:id', (req, res) => {
+    let query = "DELETE FROM Umpire WHERE idUmpire = "+req.params.id;
+    connectDB(query, sendResponse, res);      
+});
+
+router.post('/umpires/umpire-types/umpire-type/add/:id', (req, res) => {
+
+});
+
+router.post('/umpires/umpire-types/umpire-type/add/', (req, res) => {
+
+});
+
+router.post('/umpires/umpire-types/umpire-type/delete/:id', (req, res) => {
+     
+});
+
 router.post('/venues/add/:id', (req, res) => {
     let query = "UPDATE Venue SET name = \""+req.body.name+"\", address = \""+req.body.address+"\" WHERE idVenue = "+req.params.id;
     connectDB(query, sendResponse, res);      
@@ -144,6 +186,11 @@ router.get('/modules', (req, res) => {
     connectDB(query, sendResponse, res);
 });
 
+router.get('/umpires/:id', (req, res) => {
+    let query = 'SELECT * FROM Umpire WHERE idUmpire = '+req.params.id;
+    connectDB(query, sendResponse, res);
+});
+
 router.get('/umpires', (req, res) => {
     let query = 'SELECT u.idUmpire as id, u.givenName, u.familyName, a.level FROM Umpire AS u ' +
         'INNER JOIN AccreditedUmpire AS au ON au.Umpire_idUmpire = u.idUmpire ' +
@@ -152,8 +199,13 @@ router.get('/umpires', (req, res) => {
     connectDB(query, sendResponse, res);
 });
 
-router.get('/umpires/:id', (req, res) => {
-    let query = 'SELECT * FROM Umpire WHERE idUmpire = '+req.params.id;
+router.get('/umpires/umpire-types/:id', (req, res) => {
+    let query = 'SELECT * FROM Type WHERE idType = '+req.params.id;
+    connectDB(query, sendResponse, res);
+});
+
+router.get('/umpires/umpire-types', (req, res) => {
+    let query = 'SELECT * FROM Type';
     connectDB(query, sendResponse, res);
 });
 

@@ -1,4 +1,4 @@
-import { NgModule, Component, Pipe, ViewChild, OnInit } from '@angular/core';
+import { NgModule, Component, Pipe, OnInit }            from '@angular/core';
 import { ReactiveFormsModule, FormsModule, FormGroup, 
           AbstractControl, FormControl, Validators, 
           FormBuilder, FormArray }                      from '@angular/forms';
@@ -28,6 +28,7 @@ export class UmpireComponent implements OnInit {
   private familyName: FormControl;
   private mobile: FormControl;
   private email: FormControl;
+  private accreds: FormControl;
   private idUmpire: number;
   private fieldRequiredError: string            = "Entry is required";
   private invalidCharsError: string             = "Field contains invalid characters";
@@ -39,10 +40,8 @@ export class UmpireComponent implements OnInit {
   private accreditations: [Object];
   private umpireAccreditations: [Object];
   private dataLoaded: boolean                   = false;
-  private umpireDetails: any                     = {};
-
-  // Sharing data from two sub components
-  @ViewChild(AccreditationComponent) accredComponent;
+  private umpireDetails: any                    = {};
+  private redirectURL: string                   = '/umpires';
 
   constructor(  private route: ActivatedRoute,
                 private apiService: ApiService,  
@@ -55,23 +54,12 @@ export class UmpireComponent implements OnInit {
      this.createForm();
    }
 
-  getUmpireDetails(){    
-     /* See if we have a club ID. If so then club details are needed */
-     this.sub = this.route.params.subscribe(params => {
-       this.idUmpire = +params['id'];
-       /*
-        * Umpire is to be edited.
-       */
-       if(this.idUmpire){
-         this.editMode = true;
-         this.apiService.getData('/api/umpires/'+this.idUmpire).subscribe(data => {
-            this.umpireDetails = data[0];
-         });
-       }
-       this.dataLoaded = true;
-     });
-  }
-
+   /*
+   * Sent from the accreditations.component.
+   * Won't retrieve umpire details until list is received.
+   * Note we call 'dataLoaded' after both Accreditations and 
+   * Umpire Details are loaded.
+   */
   receiveAccreditationsList($event) {
     this.accreditations = $event;
     if(this.accreditations){
@@ -79,9 +67,18 @@ export class UmpireComponent implements OnInit {
     }
   }
 
-  receiveAccredUmpList($event){
-    console.log($event);
-    this.umpireAccreditations = $event;
+  getUmpireDetails(){    
+     /* See if we have a club ID. If so then club details are needed */
+     this.sub = this.route.params.subscribe(params => {
+       if(+params['id']){
+         this.idUmpire = +params['id'];
+         this.editMode = true;
+         this.apiService.getData('/api/umpires/'+this.idUmpire).subscribe(data => {
+            this.umpireDetails = data[0];
+         });
+       }
+       this.dataLoaded = true;
+     });
   }
 
   createFormControls() {
@@ -109,6 +106,7 @@ export class UmpireComponent implements OnInit {
       Validators.maxLength(10),
       Validators.pattern("[0-9]*"),
     ]);
+    this.accreds = new FormControl('');
   }
 
   createForm() {
@@ -118,11 +116,11 @@ export class UmpireComponent implements OnInit {
         familyName: this.familyName,
       }),
       mobile: this.mobile,
-      email:  this.email
+      email:  this.email,
     });       
   }
 
-    emailDomainValidator(control: FormControl) {
+  emailDomainValidator(control: FormControl) {
     let email = control.value;
     if (email && email.indexOf("@") != -1) {
       let [_, domain] = email.split("@");
@@ -136,8 +134,76 @@ export class UmpireComponent implements OnInit {
     }
     return null;
   }
+
+  accredsValidator(){
+    let checked = this.accreditations.find(element=>{
+      return (element['checked'] === true);
+    });
+    if(!checked)
+      return false; 
+    return true;
+  }
+
+  getAccreditationClause(): string{
+    let atLeastOne:boolean = false;
+    let accreditationClause:string;
+
+    this.accreditations.forEach(entry=>{
+      if(entry['checked']){
+        let insertion = "(" + entry['idAccreditation'] + ",@idUmpire)"; 
+        if(atLeastOne) {
+          accreditationClause += "," + insertion;
+        }else{
+          accreditationClause = insertion;
+          atLeastOne = true;
+        }
+      }
+    });
+    return accreditationClause;
+  }
+
+  submitForm(formDetails){
+    let accreditationClause = '()';
+    if(this.accredsValidator()){
+      accreditationClause = this.getAccreditationClause();
+
+      let body = { givenName: formDetails.name.givenName,
+                   familyName: formDetails.name.familyName,
+                   mobile: formDetails.mobile,
+                   email: formDetails.email,
+                   accreditationClause: accreditationClause
+                 };
+    
+      let url = '/api/umpires/add/';
+      if(this.editMode)
+        url = url + this.idUmpire;
+
+      this.apiService.postData(url, body).subscribe(data => {
+        this.router.navigateByUrl(this.redirectURL);
+       }, (err: HttpErrorResponse) => {
+        if (err.error instanceof Error) {
+          // A client-side or network error occurred. Handle it accordingly.
+          console.log('An error occurred:', err.error.message);
+        } else {
+          // The backend returned an unsuccessful response code.
+          // The response body may contain clues as to what went wrong,
+          console.log(`Backend returned code ${err.status}, body was: ${err.error}`);
+        }
+       });
+    }else{
+      console.log("At least one accreditation level must be selected");
+    }
+  }
+
+}
+
 /*
-  submitForm(value){
+
+ 
+
+
+*/
+    /*
     let atLeastOne:boolean = false;
     let familyName = value['name']['familyName'];
     let givenName = value['name']['givenName'];
@@ -204,6 +270,4 @@ export class UmpireComponent implements OnInit {
     }else{
       this.submitWithoutAccreditation = true;
       console.log("At least one accreditation level must be selected")}
-  }
   */
-}

@@ -9,7 +9,7 @@
         }">
         <label>Given Name
           <input type="text" class="form-control"
-                 formControlName="givenName" [(ngModel)]="givenName.text" 
+                 formControlName="givenName" [(ngModel)]="umpireDetails.givenName" 
                  required>
           <div class="alert alert-danger" *ngIf="givenName.errors && givenName.touched">
             <div *ngIf="givenName.errors.required">Field is required</div>
@@ -28,7 +28,7 @@
           <label>Family Name
           <input type="text"
                  class="form-control"
-                 formControlName="familyName" [(ngModel)]="familyName.text"
+                 formControlName="familyName" [(ngModel)]="umpireDetails.familyName"
                  required>
             <div class="alert alert-danger" *ngIf="familyName.errors && familyName.touched">
               <div *ngIf="familyName.errors.required">Field is required</div>
@@ -48,7 +48,7 @@
     <label>Mobile
       <input  type="text" 
               class="form-control"
-              formControlName="mobile" [(ngModel)]="mobile.text"
+              formControlName="mobile" [(ngModel)]="umpireDetails.mobile"
               required>
       <div class="alert alert-danger" *ngIf="mobile.errors && mobile.touched">
         <div *ngIf="mobile.errors.required">{{fieldRequiredError}}</div>
@@ -68,7 +68,7 @@
     <label>Email
       <input type="email"
                class="form-control"
-               formControlName="email" [(ngModel)]="email.text"
+               formControlName="email" [(ngModel)]="umpireDetails.email"
                required>
       <div class="alert alert-danger" *ngIf="email.errors && email.touched">
         <div *ngIf="email.errors.required">{{fieldRequiredError}}</div>
@@ -98,5 +98,5 @@
   </div>
 
 </form>
-<app-accreditations [showAccreditations]="true" [idUmpire]="idUmpire" (accreditationsList)="receiveAccreditationsList($event)" (accredUmpList)="receiveAccredUmpList($event)"></app-accreditations>
+<app-accreditations [showCheckBox]="true" [showAccreditations]="true" [idUmpire]="idUmpire" (accreditationsList)="receiveAccreditationsList($event)"></app-accreditations>
 </div>

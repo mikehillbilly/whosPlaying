@@ -24,6 +24,8 @@ import { GradeComponent }              from './grades/grade/grade.component';
 import { TeamsComponent }              from './teams/teams.component';
 import { TeamComponent }               from './teams/team/team.component';
 import { DeleteEntityComponent }       from './delete-entity/delete-entity.component';
+import { UmpireTypesComponent } from './umpires/umpire-types/umpire-types.component';
+import { UmpireTypeComponent } from './umpires/umpire-types/umpire-type/umpire-type.component';
 
 @NgModule({
   declarations: [
@@ -42,7 +44,9 @@ import { DeleteEntityComponent }       from './delete-entity/delete-entity.compo
     GradeComponent,
     TeamsComponent,
     TeamComponent,
-    DeleteEntityComponent
+    DeleteEntityComponent,
+    UmpireTypesComponent,
+    UmpireTypeComponent
   ],
   imports: [
     FormsModule,                               

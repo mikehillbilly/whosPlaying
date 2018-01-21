@@ -46,7 +46,6 @@ export class AccreditationComponent implements OnInit {
       this.sub = this.route.params.subscribe(params => {
         this.idAccreditation = +params['id'];
         if(this.idAccreditation){
-          console.log("idAccreditation: ",this.idAccreditation)
           this.editMode = true;
           this.apiService.getData('/api/accreditations/'+this.idAccreditation).subscribe(data => {
             this.accreditationDetails = data[0];

@@ -1,6 +1,5 @@
-<ng-container *ngIf="showAccreditations">
+<!--ng-container *ngIf="showAccreditations">
 <h1>{{title}}</h1>
-<p>idUmpire: {{idUmpire}}</p>
 <a routerLink="/accreditations/add">{{addAccreditationLinkMessage}}</a>
 <ul>
 	<ng-container class="btn-group" *ngFor="let accreditation of accreditations">
@@ -9,6 +8,35 @@
 	</ng-container>
 </ul>
 <br>
+</ng-container-->
+
+<ng-container *ngIf="showAccreditations && isDataLoaded">
+<h1>{{title}}</h1>
+<a routerLink="/accreditations/add">{{addAccreditationLinkMessage}}</a>
+<ul>
+	<ng-container class="btn-group" *ngFor="let accreditation of accreditations">
+		<a [routerLink]="['/accreditations/', accreditation.idAccreditation]">{{accreditation.level}}</a>
+		<input *ngIf="showCheckBox" name={{accreditation.level}}  type="checkbox" ng-checked = 	"accreditation.checked" class="form-control"
+                  	[(ngModel)]="accreditation.checked" [ngModelOptions]="{standalone: true}"/>
+        <br/>
+	</ng-container>
+</ul>
+<br>
 </ng-container>
+
+
+<!--div *ngIf="isDataLoaded">
+	<h1>{{title}}</h1>
+	<form [formGroup]="accreditationForm">
+		<a routerLink="/accreditation/add">Add</a>
+
+		<div *ngFor="let level of accreditationForm.controls.levels.controls;let i = index">
+			<label>{{level.level}}
+				<input name={{level.level}} *ngIf="allowSelect" type="checkbox" ng-checked = 	"level.checked" class="form-control"
+                  	[(ngModel)]="level.checked" [ngModelOptions]="{standalone: true}" /> 
+			</label>
+		</div>
+	</form>
+</div-->
 
 

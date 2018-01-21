@@ -16,7 +16,6 @@ export class ApiService {
   }
 
   postData(url:string, body){
-    console.log(url);
   	return this.http.post(this.protocol +'://'+ this.host + ':' + this.port + url, body);
   }
 }
