@@ -1,13 +1,11 @@
 import { Component, OnInit, ViewEncapsulation, 
-		     Output, OnDestroy, EventEmitter, 
-                                 ViewChild } 		from '@angular/core';
+		     Output, OnDestroy, EventEmitter } 	  	from '@angular/core';
 import { ReactiveFormsModule, FormsModule, 
          FormGroup, AbstractControl, FormControl, 
          Validators, FormBuilder, FormArray }   from '@angular/forms';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { HttpErrorResponse }                    from '@angular/common/http';
 import { ApiService }                           from '../../api.service';
-import { VenuesComponent }                      from '../../venues/venues.component';
 
 
 @Component({
@@ -34,8 +32,6 @@ export class ClubComponent implements OnInit {
   private homeVenue:any;
   private venues: [Object];
   private dataLoaded: boolean         = false;
-
-  @ViewChild(VenuesComponent) venuesComponent;
 
   constructor( private apiService: ApiService,  
                private router: Router, 

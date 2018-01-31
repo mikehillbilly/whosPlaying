@@ -1,0 +1,11 @@
+<ng-container *ngIf="showSeasons">
+<h1>{{title}}</h1>
+<a routerLink="/Seasons/add">{{addSeasonLinkMessage}}</a>
+<ul>
+	<ng-container class="btn-group" *ngFor="let season of seasons">
+		<a [routerLink]="['/seasons/', season.idSeason]">{{season.yearStart}}</a>
+		<br>
+	</ng-container>
+</ul>
+<br>
+</ng-container>

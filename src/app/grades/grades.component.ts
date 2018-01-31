@@ -11,9 +11,9 @@ import { HttpErrorResponse }                    from '@angular/common/http';
 })
 export class GradesComponent implements OnInit {
 
-	private title: string = "grades";
+	private title: string = "Grades";
   private addGradeLinkMessage: string   = "Add New Grade" ;
-	private grades; 
+	private grades: any; 
 
   constructor( private apiService: ApiService){
 	

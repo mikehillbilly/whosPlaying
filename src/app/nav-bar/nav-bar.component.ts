@@ -1,4 +1,6 @@
 import { Component, OnInit, ViewEncapsulation, Input } from '@angular/core';
+import { NgbModule }                                   from '@ng-bootstrap/ng-bootstrap';
+import { RouterModule, Router, ActivatedRoute }        from '@angular/router';
 
 @Component({
   selector: 'app-nav-bar',
@@ -11,11 +13,15 @@ export class NavBarComponent implements OnInit {
 
 	@Input() modules: any
 
-  constructor() {
+  constructor(private router: Router) {
 
    }
 
   ngOnInit() {
   }
 
+tabChange($event){
+  this.router.navigateByUrl($event.nextId);
+
+}
 }

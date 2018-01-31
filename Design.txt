@@ -1,0 +1,107 @@
+@startuml
+
+Folder AWS {
+	Folder EC2 {
+		database "MySql - SANFL" as database {
+		}
+	}
+}
+
+Folder NodeJS {
+	Folder Express{
+		[api-msql] as api
+	}
+
+	Folder endPoints{
+		Together {
+			interface "/accreditations" as accreditations
+			interface "/clubs" as clubs
+			interface "/fixtures" as fixtures
+			interface "/grades" as grades
+			interface "/modules" as modules
+			interface "/rounds" as rounds
+			interface "/seasons" as seasons
+			interface "/teams" as teams
+			interface "/umpires" as umpires
+			interface "/venues" as venues
+		}
+	}
+}
+
+Folder Angular {
+	Folder Umpires{
+		[ accreditations ] as accreditationsComponent
+		[ accreditation ] as accreditationComponent
+		[ umpires ] as umpiresComponent
+		[ umpire ] as umpireComponent
+	}
+	Folder Clubs{
+		[ clubs ] as clubsComponent
+		[ club ] as  clubComponent
+		[ grades ] as gradesComponent
+		[ grade ] as gradeComponent
+		[ teams ] as teamsComponent
+		[ team ] as teamComponent
+	}
+	Folder Misc{
+		[ deleteEntity ]  as deleteComponent
+		[ fixtures ] as fixturesComponent
+		[ fixture ] as fixtureComponent
+		[ modules] as modulesComponent
+		[ venues ] as venuesComponent
+		[ venue ] as venueComponent
+	}
+		[ apiService ] as apiService
+}
+
+api - database
+
+accreditations - api
+clubs - api
+fixtures- api
+grades - api
+modules- api
+rounds - api
+seasons - api
+teams - api
+umpires - api
+venues -api
+
+
+accreditationsComponent - apiService
+accreditationComponent - apiService
+clubsComponent - apiService
+clubComponent - apiService
+deleteComponent - apiService
+fixturesComponent - apiService
+fixtureComponent - apiService
+gradesComponent - apiService
+gradeComponent - apiService
+modulesComponent - apiService
+teamsComponent - apiService
+teamComponent - apiService
+umpiresComponent - apiService
+umpireComponent - apiService
+venuesComponent - apiService
+venueComponent - apiService
+
+apiService - accreditations
+apiService - clubs
+apiService - fixtures
+apiService - grades
+apiService - modules
+apiService - rounds
+apiService - seasons
+apiService - teams
+apiService - umpires
+apiService - venues
+
+endPoints -[hidden]--> Express
+Misc -[hidden]--> Clubs
+Umpires -[hidden]--> Clubs
+Misc-[hidden]--> Umpires
+
+Express -[hidden]--> AWS
+NodeJS -[hidden]--> Umpires
+
+@enduml

@@ -1,0 +1,11 @@
+<ng-container *ngIf="showRounds">
+<h1>{{title}}</h1>
+<a routerLink="/rounds/add">{{addRoundLinkMessage}}</a>
+<ul>
+	<ng-container class="btn-group" *ngFor="let round of rounds">
+		<a [routerLink]="['/rounds/', round.idRound]">{{round.round}}</a>
+		<br>
+	</ng-container>
+</ul>
+<br>
+</ng-container>

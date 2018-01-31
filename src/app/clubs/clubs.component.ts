@@ -1,6 +1,7 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import {ApiService} from '../api.service';
-import { HttpErrorResponse } from '@angular/common/http';
+import { Component, OnInit, ViewEncapsulation,
+                  Input, Output, EventEmitter } from '@angular/core';
+import { ApiService }                           from '../api.service';
+import { HttpErrorResponse }                    from '@angular/common/http';
 
 @Component({
   selector: 'app-clubs',
@@ -11,9 +12,12 @@ import { HttpErrorResponse } from '@angular/common/http';
 })
 export class ClubsComponent implements OnInit {
 
-	private title: string = "Clubs";
+	public title: string = "Clubs";
   private addClubLinkMessage: string   = "Add New Club" ;
-	private clubs;
+	public clubs;
+
+  @Output() clubsList = new EventEmitter<Object>();
+  @Input() showClubs: boolean = true;
 
   constructor( private apiService: ApiService){
 	
@@ -22,6 +26,7 @@ export class ClubsComponent implements OnInit {
 ngOnInit() {
   	 this.apiService.getData('/api/clubs').subscribe(data => {
   	 		this.clubs = data;
+        this.sendClubs();
   	 }, (err: HttpErrorResponse) => {
   	 	if (err.error instanceof Error) {
         // A client-side or network error occurred. Handle it accordingly.
@@ -32,6 +37,10 @@ ngOnInit() {
         console.log(`Backend returned code ${err.status}, body was: ${err.error}`);
       }
   	 });
+  }
+
+  sendClubs(){
+    this.clubsList.emit(this.clubs);
   }
 
 }

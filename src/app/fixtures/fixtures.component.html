@@ -1,0 +1,27 @@
+<app-clubs [showClubs]="false" (clubsList)="receiveClubList($event)"></app-clubs>
+
+<div class='parent'>
+	<div class='wrapper' >
+			<ngx-slick class="carousel" #slickModal="slick-modal" [config]="slideConfig" (afterChange)="afterChange($event)">
+				<div [dragula]='"first-bag"' ngxSlickItem *ngFor="let club of clubs" class="container slide" style="height:200px">
+					<img src="../{{ club.logo }}" alt="{{ club.name }}" height="100%" max-width="100%">
+				</div>
+			</ngx-slick>
+	</div>	
+
+    <div class='wrapper'>
+        <div class='container'>
+            <div class="row" style="border: 2px solid black; height:200px"> 
+
+				<div class = "col-lg-2 col-md-2 col-xs-2" style="border: 2px solid black"></div>
+					
+					<div id="homeTeam" class = "col-lg-5 col-md-5 col-xs-5" [dragula]='"first-bag"' style="border: 2px solid black"></div>
+
+					<div id="awayTeam"class = "col-lg-5 col-md-5 col-xs-5" [dragula]='"first-bag"' style="border: 2px solid black"></div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+

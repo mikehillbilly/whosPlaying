@@ -47,13 +47,13 @@ router.post('/accreditations/delete/:id', (req, res) => {
 router.post('/clubs/add/:id', (req, res) => {
     let query = "UPDATE Club SET name = \""+req.body.name+"\", \
                 address = \""+req.body.address+"\", \
-                Venue_idVenue = \""+req.body.idVenue+"\" \
+                venue_idVenue = \""+req.body.idVenue+"\" \
                 WHERE idClub = "+req.params.id;
     connectDB(query, sendResponse, res);      
 });
 
 router.post('/clubs/add/', (req, res) => {
-    let query = "INSERT INTO Club (name, address,Venue_idVenue) \
+    let query = "INSERT INTO Club (name, address,venue_idVenue) \
                 VALUES (\""+req.body.name+"\",\""+req.body.address+"\","+req.body.idVenue+")";
     connectDB(query, sendResponse, res);      
 });
@@ -84,9 +84,9 @@ router.post('/umpires/add/:id', (req, res) => {
                   ",`mobile`=\""+req.body.mobile+"\"" + 
                   ",`email`=\""+req.body.email+"\"" + 
                   " WHERE `idUmpire`="+req.params.id+"; \
-                  DELETE FROM AccreditedUmpire WHERE `Umpire_idUmpire`="+req.params.id+"; \
+                  DELETE FROM AccreditedUmpire WHERE `umpire_idUmpire`="+req.params.id+"; \
                   SET @idUmpire = "+req.params.id+"; \
-                  INSERT INTO AccreditedUmpire (Accreditation_idAccreditation, Umpire_idUmpire) \
+                  INSERT INTO AccreditedUmpire (accreditation_idAccreditation, umpire_idUmpire) \
                   VALUES "+req.body.accreditationClause+";"; 
     connectDB(query, sendResponse, res);
 
@@ -97,7 +97,7 @@ router.post('/umpires/add/', (req, res) => {
     \""+req.body.givenName+"\",\""+req.body.familyName+"\", \
     \""+req.body.mobile+"\",\""+req.body.email+"\", NULL); \
                   SET @idUmpire = LAST_INSERT_ID();\
-                  INSERT INTO AccreditedUmpire (Accreditation_idAccreditation, Umpire_idUmpire) \
+                  INSERT INTO AccreditedUmpire (accreditation_idAccreditation, umpire_idUmpire) \
                   VALUES "+req.body.accreditationClause+";";  
     connectDB(query, sendResponse, res);
 
@@ -171,6 +171,16 @@ router.get('/clubs/:id', (req, res) => {
     connectDB(query, sendResponse, res);
 });
 
+router.get('/fixtures', (req, res) => {
+    let query = 'SELECT * FROM Fixture ORDER BY round_idRound';
+    connectDB(query, sendResponse, res);
+});
+
+router.get('/fixtures/:id', (req, res) => {
+    let query = 'SELECT * FROM Fixture WHERE idFixture = '+req.params.id;
+    connectDB(query, sendResponse, res);
+});
+
 router.get('/grades', (req, res) => {
     let query = "SELECT * FROM Grade ORDER BY name";
     connectDB(query, sendResponse, res);
@@ -181,10 +191,53 @@ router.get('/grades/:id', (req, res) => {
     connectDB(query, sendResponse, res);
 });
 
+/* Gets all grades for a team */
+router.get('/grades/teams/:id', (req, res) => {
+        let query = 'SELECT Grade.name as grade, Club.name AS club FROM Grade \
+                        INNER JOIN Team ON Grade.idGrade = Team.grade_idGrade \
+                        AND Team.club_idClub = '+req.params.id 
+                        'INNER JOIN Club ON Club.idClub = '+req.params.id;
+});
+
 router.get('/modules', (req, res) => {
     let query = "SELECT * FROM Modules WHERE enabled = true ORDER BY name";
     connectDB(query, sendResponse, res);
 });
+
+router.get('/rounds', (req, res) => {
+    let query = 'SELECT * FROM Round ORDER BY idRound';
+    connectDB(query, sendResponse, res);
+});
+
+router.get('/rounds/:id', (req, res) => {
+    let query = 'SELECT * FROM Round WHERE idRound = '+req.params.id;
+    connectDB(query, sendResponse, res);
+});
+
+router.get('/seasons', (req, res) => {
+    let query = "SELECT * FROM Season ORDER BY yearStart";
+    connectDB(query, sendResponse, res);
+});
+
+router.get('/seasons/:id', (req, res) => {
+    let query = 'SELECT * FROM Season WHERE idSeason = '+req.params.id;
+    connectDB(query, sendResponse, res);
+});
+
+router.get('teams', (req, res) => {
+        let query = 'SELECT Club.name, Grade.name FROM Club \
+                        LEFT OUTER JOIN Team ON Club.idClub = Team.club_idClub \
+                        LEFT OUTER JOIN Grade ON Team.grade_idGrade = Grade.idGrade';
+});
+
+/*Gets all teams for a grade*/
+router.get('teams/grades/:id', (req, res) => {
+        let query = 'SELECT Club.name as club, Grade.name AS grade FROM Club \
+                        INNER JOIN Team ON Club.idClub = Team.club_idClub \
+                        AND Team.grade_idGrade = '+req.params.id 
+                        'INNER JOIN Grade ON Grade.idGrade = '+req.params.id;
+});
+
 
 router.get('/umpires/:id', (req, res) => {
     let query = 'SELECT * FROM Umpire WHERE idUmpire = '+req.params.id;
@@ -193,8 +246,8 @@ router.get('/umpires/:id', (req, res) => {
 
 router.get('/umpires', (req, res) => {
     let query = 'SELECT u.idUmpire as id, u.givenName, u.familyName, a.level FROM Umpire AS u ' +
-        'INNER JOIN AccreditedUmpire AS au ON au.Umpire_idUmpire = u.idUmpire ' +
-        'INNER JOIN Accreditation AS a ON a.idAccreditation = au.Accreditation_idAccreditation ' +
+        'INNER JOIN AccreditedUmpire AS au ON au.umpire_idUmpire = u.idUmpire ' +
+        'INNER JOIN Accreditation AS a ON a.idAccreditation = au.accreditation_idAccreditation ' +
         'GROUP by u.familyName, u.givenName, a.level';
     connectDB(query, sendResponse, res);
 });

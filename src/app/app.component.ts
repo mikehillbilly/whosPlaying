@@ -4,13 +4,15 @@ import { ApiService } from './api.service';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css'],
-  providers:       [ApiService]
+  styleUrls:   ['./app.component.css'],
+  providers:   [ApiService]
 })
+
 export class AppComponent {
 	private title: string 	= "SANFL Fixture Management Application";
 	private logo: string 	= "https://upload.wikimedia.org/wikipedia/en/thumb/7/7d/SANFL_logo.svg/1200px-SANFL_logo.svg.png";
   private modules: any;
+  private enableNavBar: boolean = false;
 
   constructor( private apiService: ApiService ){
 

@@ -6,9 +6,8 @@ import { BrowserModule}                                 from '@angular/platform-
 import { platformBrowserDynamic}                        from '@angular/platform-browser-dynamic';
 import { ApiService}                                    from '../../api.service';
 import { HttpErrorResponse }                            from '@angular/common/http';
-import { RouterModule, Router }                         from '@angular/router';
+import { RouterModule, Router, ActivatedRoute }         from '@angular/router';
 import { AccreditationComponent}                        from '../../accreditations/accreditation/accreditation.component';
-import { ActivatedRoute }                               from '@angular/router';
 
 @Component({
   selector: 'app-umpire',
