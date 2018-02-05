@@ -1,29 +1,28 @@
 @startuml
+Folder NodeJS{
+	Folder endPoints{
+		() "/accrediations" as  accreditations
+		() "/clubs" as clubs
+		() "/fixtures" as fixtures
+		() "/grades" as grades
+		() "/modules" as modules
+		() "/rounds" as rounds
+		() "/seasons" as seasons
+		() "/teams" as teams
+		() "/umpires" as umpires
+		() "/venues" as venues
+	}
 
-Folder AWS {
-	Folder EC2 {
-		database "MySql - SANFL" as database {
-		}
+	Folder Express{
+		[ api-mySQL ] as api
+		[ SequelizeDBManager ] as dbManager
 	}
 }
 
-Folder NodeJS {
-	Folder Express{
-		[api-msql] as api
-	}
+Folder AWS {
+	Folder EC2 {
+		database "SANFL Fixtures" as database{
 
-	Folder endPoints{
-		Together {
-			interface "/accreditations" as accreditations
-			interface "/clubs" as clubs
-			interface "/fixtures" as fixtures
-			interface "/grades" as grades
-			interface "/modules" as modules
-			interface "/rounds" as rounds
-			interface "/seasons" as seasons
-			interface "/teams" as teams
-			interface "/umpires" as umpires
-			interface "/venues" as venues
 		}
 	}
 }
@@ -54,7 +53,8 @@ Folder Angular {
 		[ apiService ] as apiService
 }
 
-api - database
+database - dbManager
+api - dbManager
 
 accreditations - api
 clubs - api
@@ -66,7 +66,6 @@ seasons - api
 teams - api
 umpires - api
 venues -api
-
 
 accreditationsComponent - apiService
 accreditationComponent - apiService

@@ -1,24 +1,13 @@
 const express = require('express');
 const router = express.Router();
+const database = require('./mySQL-manager.js');
+module.exports = router;
 
-var mysql = require("mysql");
 var connection = null;
 
 /* Setup connection to MySQL DB */
 router.use(function(req, res, next){
-	connection = mysql.createConnection({
-        multipleStatements: true,
-        host: 'ec2-52-64-215-106.ap-southeast-2.compute.amazonaws.com',
-        user: 'mike',
-        password: 'sanfl',
-        database: 'SANFLFixtures'
-	});
-	connection.connect(function (err){
-		if(err){
-            //log error 
-			console.log(err);
-        }
-	});
+	connection = database.getConnecion();
 	next();
 });
 
@@ -200,8 +189,9 @@ router.get('/grades/teams/:id', (req, res) => {
 });
 
 router.get('/modules', (req, res) => {
-    let query = "SELECT * FROM Modules WHERE enabled = true ORDER BY name";
-    connectDB(query, sendResponse, res);
+    	let query = "SELECT * FROM Modules WHERE enabled = true ORDER BY name";
+    	let result = database.getModules();
+    //connectDB(query, sendResponse, res);
 });
 
 router.get('/rounds', (req, res) => {
@@ -304,5 +294,3 @@ function connectDB(query, callback, res){
         if(err) throw err;
     });
 }
-
-module.exports = router;
